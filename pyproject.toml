@@ -52,6 +52,8 @@ optional = true
 optional = true
 
 [tool.poetry.group.dev.dependencies]
+langgraph = "^0.2.72"
+jupyter = "^1.1.1"
 
 [tool.poetry.group.test.dependencies]
 pytest = "^7.4.3"
