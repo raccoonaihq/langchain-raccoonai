@@ -1,18 +1,18 @@
-from .base import BaseRaccoonAITool
-from typing import Optional, Type, Any, Dict
+from typing import Optional, Type, Any
 
 from langchain_core.callbacks import (
     CallbackManagerForToolRun,
     AsyncCallbackManagerForToolRun,
 )
-from pydantic import BaseModel, Field
-
+from pydantic import Field
 from raccoonai import RaccoonAI, AsyncRaccoonAI
-from raccoonai.types import LamRunParams
+
+from .base import BaseRaccoonAITool
+from ..models import RunParams
 
 
 class RaccoonAIRunTool(BaseRaccoonAITool):
-    name: str = "browse_web"
+    name: str = "raccoonai_browse_web"
     description: str = """
         Navigates and interacts with websites using RaccoonAI. Best for:
         - Searching and collecting information across multiple pages
@@ -20,23 +20,32 @@ class RaccoonAIRunTool(BaseRaccoonAITool):
         - Interacting with dynamic web content
         - Executing complex web browsing sequences
         """
-    args_schema: Type[BaseModel] = LamRunParams
-    client: RaccoonAI = Field(exclude=True)
-    async_client: AsyncRaccoonAI = Field(exclude=True)
+    args_schema: Type[RunParams] = RunParams
+    client: Optional[RaccoonAI] = Field(
+        default=None,
+        exclude=True
+    )
+    async_client: Optional[AsyncRaccoonAI] = Field(
+        default=None,
+        exclude=True
+    )
 
     def _run(
             self,
+            query: str,
+            raccoon_passcode: str,
+            app_url: Optional[str] = None,
             run_manager: Optional[CallbackManagerForToolRun] = None,
-            **kwargs: Dict[str, Any],
     ) -> Any:
         try:
-            stream = kwargs.get('stream', False)
-
-            if stream:
-                with self.client.lam.run(**kwargs) as response_chunks:
-                    return self._handle_stream(response_chunks, 'run', run_manager)
-            else:
-                return self.client.lam.run(stream=False, **kwargs)
+            if not self.client:
+                raise ValueError("You must pass RaccoonAI client while initializing.")
+            with self.client.lam.run(
+                    query=query,
+                    raccoon_passcode=raccoon_passcode,
+                    app_url=app_url
+            ) as response_chunks:
+                return self._handle_stream(response_chunks, run_manager)
 
         except Exception as e:
             if run_manager:
@@ -45,17 +54,20 @@ class RaccoonAIRunTool(BaseRaccoonAITool):
 
     async def _arun(
             self,
+            query: str,
+            raccoon_passcode: str,
+            app_url: Optional[str] = None,
             run_manager: Optional[AsyncCallbackManagerForToolRun] = None,
-            **kwargs: Dict[str, Any],
     ) -> Any:
         try:
-            stream = kwargs.get('stream', False)
-
-            if stream:
-                async with await self.async_client.lam.run(**kwargs) as response_chunks:
-                    return await self._ahandle_stream(response_chunks, 'run', run_manager)
-            else:
-                return await self.async_client.lam.run(stream=False, **kwargs)
+            if not self.async_client:
+                raise ValueError("You must pass AsyncRaccoonAI client while initializing.")
+            async with await self.async_client.lam.run(
+                    query=query,
+                    raccoon_passcode=raccoon_passcode,
+                    app_url=app_url
+            ) as response_chunks:
+                return await self._ahandle_stream(response_chunks, run_manager)
 
         except Exception as e:
             if run_manager:
