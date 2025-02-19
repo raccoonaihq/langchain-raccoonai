@@ -43,6 +43,7 @@ class RaccoonAIRunTool(BaseRaccoonAITool):
             with self.client.lam.run(
                     query=query,
                     raccoon_passcode=raccoon_passcode,
+                    stream=True,
                     app_url=app_url
             ) as response_chunks:
                 return self._handle_stream(response_chunks, run_manager)
@@ -65,6 +66,7 @@ class RaccoonAIRunTool(BaseRaccoonAITool):
             async with await self.async_client.lam.run(
                     query=query,
                     raccoon_passcode=raccoon_passcode,
+                    stream=True,
                     app_url=app_url
             ) as response_chunks:
                 return await self._ahandle_stream(response_chunks, run_manager)

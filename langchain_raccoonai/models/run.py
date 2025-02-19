@@ -6,7 +6,7 @@ from pydantic import BaseModel, Field
 class RunParams(BaseModel):
     query: str = Field(
         description="The input query for the task.",
-        example="Find YCombinator startups funded in W24."
+        examples=["Find YCombinator startups funded in W24."]
     )
     raccoon_passcode: str = Field(
         ...,
@@ -15,5 +15,5 @@ class RunParams(BaseModel):
     app_url: Optional[str] = Field(
         default="",
         description="Entrypoint URL for the task.",
-        example="https://www.ycombinator.com"
+        examples=["https://www.ycombinator.com"]
     )

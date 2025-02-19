@@ -8,7 +8,7 @@ from .run import RunParams
 class ExtractParams(RunParams):
     response_schema: Optional[Dict[str, Any]] = Field(
         description="The expected schema for the response. Describe the fields and their purpose using a JSON schema.",
-        example={
+        examples=[{
             "type": "object",
             "properties": {
                 "product_name": {
@@ -24,7 +24,7 @@ class ExtractParams(RunParams):
                     "description": "Product page URL"
                 }
             }
-        },
+        }],
         default={
             "type": "object",
             "properties": {
@@ -46,6 +46,6 @@ class ExtractParams(RunParams):
     max_count: Optional[int] = Field(
         default=1,
         description="Max number of results.",
-        example=2,
+        examples=[2],
         le=20
     )

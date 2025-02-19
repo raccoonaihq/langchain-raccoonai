@@ -1,12 +1,12 @@
 from typing import List, Optional
 
 from langchain_core.tools import BaseTool, BaseToolkit
+from pydantic import ConfigDict
 from raccoonai import RaccoonAI, AsyncRaccoonAI
 
 
 class BaseRaccoonAIToolkit(BaseToolkit):
-    class Config:
-        arbitrary_types_allowed = True
+    model_config = ConfigDict(arbitrary_types_allowed=True)
 
     client: Optional[RaccoonAI]
     async_client: Optional[AsyncRaccoonAI]

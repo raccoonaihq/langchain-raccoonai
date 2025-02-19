@@ -4,3 +4,4 @@ tests_templates
 docs_templates
 templates
 .idea
+.env
