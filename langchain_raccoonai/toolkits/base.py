@@ -8,8 +8,8 @@ from raccoonai import RaccoonAI, AsyncRaccoonAI
 class BaseRaccoonAIToolkit(BaseToolkit):
     model_config = ConfigDict(arbitrary_types_allowed=True)
 
-    client: Optional[RaccoonAI]
-    async_client: Optional[AsyncRaccoonAI]
+    client: Optional[RaccoonAI] = None
+    async_client: Optional[AsyncRaccoonAI] = None
 
     def get_tools(self) -> List[BaseTool]:
         pass

@@ -15,12 +15,12 @@ from ..models import ExtractParams
 class RaccoonAIExtractTool(BaseRaccoonAITool):
     name: str = "raccoonai_extract_web_data"
     description: str = """
-        Extracts structured data from web pages in a given response_schema using RaccoonAI. Useful for:
-        - Scraping product information from e-commerce sites
-        - Gathering contact details from business directories
-        - Collecting article metadata from news sites
-        - Converting webpages into structured data
-        - Getting any available information on the web in a structured format
+        General-purpose web browsing and interaction tool. Use this for:
+        - Finding answers to questions that require reading web content
+        - Following navigation flows on websites
+        - Performing sequences of browsing actions
+        - Getting unstructured text content from websites
+        Do NOT use this for extracting structured data - use raccoonai_extract_web_data instead.
         """
     args_schema: Type[ExtractParams] = ExtractParams
     client: Optional[RaccoonAI] = Field(

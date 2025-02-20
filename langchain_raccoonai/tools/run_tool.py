@@ -14,11 +14,12 @@ from ..models import RunParams
 class RaccoonAIRunTool(BaseRaccoonAITool):
     name: str = "raccoonai_browse_web"
     description: str = """
-        Navigates and interacts with websites using RaccoonAI. Best for:
-        - Searching and collecting information across multiple pages
-        - Following links and navigating website hierarchies
-        - Interacting with dynamic web content
-        - Executing complex web browsing sequences
+        Specialized tool for extracting structured data into specific formats. ONLY use this when you need:
+        - Data in a specific JSON schema or structure
+        - Multiple items in the same format (like product listings, news/posts)
+        - Consistent fields extracted from web pages
+        - Converting web content into structured formats
+        For general web browsing or question-answering, use raccoonai_browse_web instead.
         """
     args_schema: Type[RunParams] = RunParams
     client: Optional[RaccoonAI] = Field(
